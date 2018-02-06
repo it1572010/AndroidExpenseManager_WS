@@ -67,7 +67,24 @@ class Income implements JsonSerializable{
     }
 
     public function __set($name, $value) {
-        ;
+        if (isset($value)) {
+            switch ($name) {
+                case 'idCategoryIncome':
+                    $this->CategoryIncome->setIdCategoryIncome($value);
+                    break;
+                case 'nameCategoryIncome':
+                    $this->CategoryIncome->setNameCategoryIncome($value);
+                    break;
+                case 'idUser':
+                    $this->User->setIdUser($value);
+                    break;
+                case 'nameUser':
+                    $this->User->setNameUser($value);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public function jsonSerialize() {

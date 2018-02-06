@@ -5,7 +5,12 @@
  * @author Anthony
  */
 class Outcome implements JsonSerializable{
-    //put your code here
+    
+    private $idOutcome;
+    private $moneyOutcome;
+    private $informationOutcome;
+    private $timeOutcome;
+    
     public function jsonSerialize() {
         
     }
