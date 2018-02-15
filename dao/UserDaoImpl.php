@@ -36,12 +36,11 @@ class UserDaoImpl {
 
     public function addUser(User $user) {
         $link = PDOUtil::createPDOConnection();
-        $query = "INSERT INTO User(idUser,nameUser,emailUser,password) VALUES (?,?,?,?)";
+        $query = "INSERT INTO User(nameUser,emailUser,password) VALUES (?,?,?,?)";
         $stmt = $link->prepare($query);
-        $stmt->bindValue(1, $user->getIdUser(), PDO::PARAM_INT);
-        $stmt->bindValue(2, $user->getNameUser(), PDO::PARAM_STR);
-        $stmt->bindValue(3, $user->getEmailUser(), PDO::PARAM_STR);
-        $stmt->bindValue(4, $user->getPassword(), PDO::PARAM_STR);
+        $stmt->bindValue(1, $user->getNameUser(), PDO::PARAM_STR);
+        $stmt->bindValue(2, $user->getEmailUser(), PDO::PARAM_STR);
+        $stmt->bindValue(3, $user->getPassword(), PDO::PARAM_STR);
         $link->beginTransaction();
         if ($stmt->execute()) {
             $link->commit();

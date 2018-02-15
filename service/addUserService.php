@@ -7,14 +7,12 @@ include_once '../util/PDOUtil.php';
 $apiKey = filter_input(INPUT_POST, 'api_key');
 header("content-type:application/json");
 if (isset($apiKey)) {
-    $idUser = filter_input(INPUT_POST, 'idUser');
     $nameUser = filter_input(INPUT_POST, 'nameUser');
     $emailUser = filter_input(INPUT_POST, 'emailUser');
     $password = filter_input(INPUT_POST, 'password');
     if (isset($nameUser) && !empty($nameUser) && isset($idUser) && !empty($idUser) && isset($emailUser) && !empty($emailUser) && isset($password) && !empty($password)) {
         $userDao = new UserDaoImpl();
         $user = new User();
-        $user->setIdUser($idUser);
         $user->setNameUser($nameUser);
         $user->setEmailUser($emailUser);
         $user->setPassword($password);

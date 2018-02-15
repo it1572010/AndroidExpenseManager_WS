@@ -35,14 +35,13 @@ class IncomeDaoImpl {
     
     public function addIncome(Income $income){
         $link= PDOUtil::createPDOConnection();
-        $query="INSERT INTO Income(idIncome,moneyIncome,informationIncome,timeIncome,User_idUser,CategoryIncome_idCategoryIncome) VALUES (?,?,?,?,?,?)";
+        $query="INSERT INTO Income(moneyIncome,informationIncome,timeIncome,User_idUser,CategoryIncome_idCategoryIncome) VALUES (?,?,?,?,?,?)";
         $stmt=$link->prepare($query);
-        $stmt->bindValue(1,$income->getIdIncome(), PDO::PARAM_INT);
-        $stmt->bindValue(2, $income->getMoneyIncome(), PDO::PARAM_INT);
-        $stmt->bindValue(3, $income->getInformationIncome(), PDO::PARAM_STR);
-        $stmt->bindValue(4, $income->getTimeIncome(), PDO::PARAM_STR);
-        $stmt->bindValue(5, $income->getUser()->getIdUser(), PDO::PARAM_INT);
-        $stmt->bindValue(6, $income->getCategoryIncome()->getIdCategoryIncome(), PDO::PARAM_INT);
+        $stmt->bindValue(1, $income->getMoneyIncome(), PDO::PARAM_INT);
+        $stmt->bindValue(2, $income->getInformationIncome(), PDO::PARAM_STR);
+        $stmt->bindValue(3, $income->getTimeIncome(), PDO::PARAM_STR);
+        $stmt->bindValue(4, $income->getUser()->getIdUser(), PDO::PARAM_INT);
+        $stmt->bindValue(5, $income->getCategoryIncome()->getIdCategoryIncome(), PDO::PARAM_INT);
         $link->beginTransaction();
         if($stmt->execute()){
             $link->commit();

@@ -9,7 +9,6 @@ include_once '../util/PDOUtil.php';
 $apiKey = filter_input(INPUT_POST, 'api_key');
 header("content-type:application/json");
 if (isset($apiKey)) {
-    $idIncome = filter_input(INPUT_POST, 'idIncome');
     $moneyIncome = filter_input(INPUT_POST, 'moneyIncome');
     $informationIncome = filter_input(INPUT_POST, 'informationIncome');
     $timeIncome = filter_input(INPUT_POST, 'timeIncome');
@@ -18,7 +17,6 @@ if (isset($apiKey)) {
     if (isset($idIncome) && !empty($idIncome) && isset($moneyIncome) && !empty($moneyIncome) && isset($informationIncome) && !empty($informationIncomeUser) && isset($User_idUser) && !empty($User_idUser) && isset($CateogryIncome_idCateogryIncome) && !empty($CateogryIncome_idCateogryIncome)) {
         $incomeDao = new IncomeDaoImpl();
         $income = new Income();
-        $income->setIdIncome($idIncome);
         $income->setMoneyIncome($moneyIncome);
         $income->setInformationIncome($informationIncome);
         $income->setTimeIncome($timeIncome);
