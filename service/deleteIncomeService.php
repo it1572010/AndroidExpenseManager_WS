@@ -11,20 +11,12 @@ include_once '../util/PDOUtil.php';
 $apiKey = filter_input(INPUT_POST, 'api_key');
 header("content-type:application/json");
 if (isset($apiKey)) {
-    $moneyIncome = filter_input(INPUT_POST, 'moneyIncome');
-    $informationIncome = filter_input(INPUT_POST, 'informationIncome');
-    $timeIncome = filter_input(INPUT_POST, 'timeIncome');
-    $User_idUser = filter_input(INPUT_POST, 'User_idUser');
-    $CateogryIncome_idCateogryIncome = filter_input(INPUT_POST, 'CateogryIncome_idCateogryIncome');
-    if (isset($idIncome) && !empty($idIncome) && isset($moneyIncome) && !empty($moneyIncome) && isset($informationIncome) && !empty($informationIncomeUser) && isset($User_idUser) && !empty($User_idUser) && isset($CateogryIncome_idCateogryIncome) && !empty($CateogryIncome_idCateogryIncome)) {
+    $idIncome= filter_input(INPUT_POST, 'idIncome');
+    if (isset($idIncome) && !empty($idIncome)) {
         $incomeDao = new IncomeDaoImpl();
         $income = new Income();
-        $income->setMoneyIncome($moneyIncome);
-        $income->setInformationIncome($informationIncome);
-        $income->setTimeIncome($timeIncome);
-        $income->setUser($User_idUser);
-        $income->setCategoryIncome($CateogryIncome_idCateogryIncome);
-        $incomeDao->addIncome($income);
+        $income->setIdIncome($idIncome);
+        $incomeDao->deleteIncome($income);
         $jsonData = array();
         $jsonData['status'] = 1;
         $jsonData['message'] = 'Data successfully added';
