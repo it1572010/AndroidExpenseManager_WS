@@ -4,15 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/dao/IncomeDaoImpl.php</file>
-            <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/service/addUserService.php</file>
             <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/dao/UserDaoImpl.php</file>
-            <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/service/addIncomeService.php</file>
-            <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/entity/User.php</file>
-            <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/entity/CategoryIncome.php</file>
-            <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/util/PDOUtil.php</file>
             <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/dao/OutcomeDaoImpl.php</file>
-            <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/dao/CategoryOutcomeDaoImpl.php</file>
-            <file>file:/C:/xampp/htdocs/AndroidExpenseManager_WS/entity/Income.php</file>
         </group>
     </open-files>
 </project-private>

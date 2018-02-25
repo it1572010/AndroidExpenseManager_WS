@@ -14,6 +14,8 @@ class PDOUtil {
     }
 
     public static function closePDOConnection(PDO $link) {
-        $link = NULL;
+        if(isset($link)){
+            $link=NULL;
+        }
     }
 }

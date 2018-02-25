@@ -67,7 +67,7 @@ class Outcome implements JsonSerializable{
     }
     
     public function jsonSerialize() {
-        
+        return get_object_vars($this);
     }
 
     public function __set($name, $value) {

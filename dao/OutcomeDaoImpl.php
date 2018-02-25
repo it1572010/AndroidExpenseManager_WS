@@ -12,6 +12,11 @@
  * @author Win10
  */
 class OutcomeDaoImpl {
+    /**
+     *
+     * @var Outcome $data
+     */
+    private $dataOutcome;
     public function getAllOutcome(){
         $link= PDOUtil::createPDOConnection();
         $query="SELECT * FROM Outcome";
@@ -22,8 +27,8 @@ class OutcomeDaoImpl {
     }
     
     public function getOutcomeFromDb($id){
-        $link= PDOUtil::createPDOConnection();
         $query="SELECT * FROM Outcome WHERE idOutcome=? LIMIT 1";
+        $link= PDOUtil::createPDOConnection();
         $stmt=$link->prepare($query);
         $stmt->bindParam(1, $id, PDO::PARAM_INT);
         $stmt->setFetchMode(PDO::FETCH_OBJ);
@@ -33,41 +38,52 @@ class OutcomeDaoImpl {
         return $result;
     }
     
-    public function addOutcome(Outcome $outcome){
-        $link= PDOUtil::createPDOConnection();
-        $query="INSERT INTO Outcome(idOutcome,moneyOutcome,informationOutcome,timeOutcome,User_idUser,CategoryOutcome_idCategoryOutcome) VALUES (?,?,?,?,?,?)";
-        $stmt=$link->prepare($query);
-        $stmt->bindValue(1,$outcome->getIdOutcome(), PDO::PARAM_INT);
-        $stmt->bindValue(2, $outcome->getMoneyOutcome(), PDO::PARAM_INT);
-        $stmt->bindValue(3, $outcome->getInformationOutcome(), PDO::PARAM_STR);
-        $stmt->bindValue(4, $outcome->getTimeOutcome(), PDO::PARAM_STR);
-        $stmt->bindValue(5, $outcome->getUser()->getIdUser(), PDO::PARAM_INT);
-        $stmt->bindValue(6, $outcome->getCategoryOutcome()->getIdCategoryOutcome(), PDO::PARAM_INT);
-        $link->beginTransaction();
-        if($stmt->execute()){
-            $link->commit();
-        } else {
-            $link->rollBack();
+    public function getOutcomeUser(){
+        if(isset($dataOutcome)&&!empty($dataOutcome)){
+            $query="Select SUM(moneyOutcome) WHERE idUser=?";
+            $link= PDOUtil::createPDOConnection();
+            $stmt=$link->prepare($query);
+            $stmt->bindValue(1, $this->dataOutcome->getUser()->getIdUser(), PDO::PARAM_INT);
+            $stmt->setFetchMode(PDO::FETCH_OBJ | PDO::FETCH_PROPS_LATE);
+            $result=$stmt->execute();
+            PDOUtil::closePDOConnection($link);
+            return $result;
         }
-        PDOUtil::closePDOConnection($link);
+        return NULL;
     }
     
-    public function updateOutcome(Outcome $outcome){
-        $link= PDOUtil::createPDOConnection();
-        $query="UPDATE Outcome SET moneyOutcome=?,informationOutcome=?,timeOutcome=?,User_idUser=?,CategoryOutcome_idCategoryOutcome=? WHERE idOutcome=?";
-        $stmt=$link->prepare($query);
-        $stmt->bindValue(1, $outcome->getMoneyOutcome(), PDO::PARAM_INT);
-        $stmt->bindValue(2, $outcome->getInformationOutcome(), PDO::PARAM_STR);
-        $stmt->bindValue(3, $outcome->getTimeOutcome(), PDO::PARAM_STR);
-        $stmt->bindValue(4, $outcome->getCategoryOutcome()->getIdCategoryOutcome(), PDO::PARAM_INT);
-        $stmt->bindValue(5,$outcome->getIdOutcome(), PDO::PARAM_INT);
-        $link->beginTransaction();
-        if($stmt->execute()){
-            $link->commit();
-        } else {
-            $link->rollBack();
+    public function addOutcome(){
+        if(isset($dataOutcome) && !empty($dataOutcome)){
+            $link= PDOUtil::createPDOConnection();
+            $query="INSERT INTO Outcome(moneyOutcome,informationOutcome,timeOutcome,User_idUser,CategoryOutcome_idCategoryOutcome) VALUES (?,?,?,?,?)";
+            $stmt=$link->prepare($query);
+            $stmt->bindValue(1, $this->dataOutcome->getMoneyOutcome(), PDO::PARAM_INT);
+            $stmt->bindValue(2, $this->dataOutcome->getInformationOutcome(), PDO::PARAM_STR);
+            $stmt->bindValue(3, $this->dataOutcome->getTimeOutcome(), PDO::PARAM_STR);
+            $stmt->bindValue(4, $this->dataOutcome->getUser()->getIdUser(), PDO::PARAM_INT);
+            $stmt->bindValue(5, $this->dataOutcome->getCategoryOutcome()->getIdCategoryOutcome(), PDO::PARAM_INT);
+            $result = $stmt->execute();
+            PDOUtil::closePDOConnection($link);
+            return $result;
         }
-        PDOUtil::closePDOConnection($link);
+        return NULL;
+    }
+    
+    public function updateOutcome(){
+        if(isset($dataOutcome) && !empty($dataOutcome)){
+            $link= PDOUtil::createPDOConnection();
+            $query="UPDATE Outcome SET moneyOutcome=?,informationOutcome=?,timeOutcome=?,CategoryOutcome_idCategoryOutcome=? WHERE idOutcome=?";
+            $stmt=$link->prepare($query);
+            $stmt->bindValue(1, $this->dataOutcome->getMoneyOutcome(), PDO::PARAM_INT);
+            $stmt->bindValue(2, $this->dataOutcome->getInformationOutcome(), PDO::PARAM_STR);
+            $stmt->bindValue(3, $this->dataOutcome->getTimeOutcome(), PDO::PARAM_STR);
+            $stmt->bindValue(4, $this->dataOutcome->getCategoryOutcome()->getIdCategoryOutcome(), PDO::PARAM_INT);
+            $stmt->bindValue(5, $this->dataOutcome->getIdOutcome(), PDO::PARAM_INT);
+            $result=$stmt->execute();
+            PDOUtil::closePDOConnection($link);
+            return $result;
+        }
+        return NULL;
     }
     
     public function deleteOutcome(Outcome $outcome){

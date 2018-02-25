@@ -24,11 +24,9 @@ class CategoryIncome implements JsonSerializable{
     public function setNameCategoryIncome($nameCategoryIncome) {
         $this->nameCategoryIncome = $nameCategoryIncome;
     }
-
-    
     
     public function jsonSerialize() {
-        
+        return get_object_vars($this);
     }
 
 }

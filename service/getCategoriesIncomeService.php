@@ -9,19 +9,29 @@ include_once '../util/PDOUtil.php';
  *
  * @author Win10
  */
-$apiKey = filter_input(INPUT_GET, 'api_key');
+
+$categoryIncomeDao = new CategoryIncomeDaoImpl();
+/*
+ * @var $result PDOStatement
+ */
+$result=$categoryIncomeDao->getAllCategoriesIncome();
+$data=$result->fetchAll();
 header("content-type:application/json");
-if (isset($apiKey)) {
-    $categoryIncomeDao = new CategoryIncomeDaoImpl();
-    $result = $categoryIncomeDao->getAllCategoriesIncome();
-    $categoriesIncome = array();
-    foreach ($result as $categoryIncome) {
-        array_push($categoriesIncome, $categoryIncome);
-    }
-    echo json_encode($categoriesIncome);
-} else {
-    $jsonData = array();
-    $jsonData['status'] = 2;
-    $jsonData['message'] = 'API Key not recognized';
-    echo json_encode($jsonData);
-}
+echo json_encode($data);
+
+//$apiKey = filter_input(INPUT_GET, 'api_key');
+//header("content-type:application/json");
+//if (isset($apiKey)) {
+//    $categoryIncomeDao = new CategoryIncomeDaoImpl();
+//    $result = $categoryIncomeDao->getAllCategoriesIncome();
+//    $categoriesIncome = array();
+//    foreach ($result as $categoryIncome) {
+//        array_push($categoriesIncome, $categoryIncome);
+//    }
+//    echo json_encode($categoriesIncome);
+//} else {
+//    $jsonData = array();
+//    $jsonData['status'] = 2;
+//    $jsonData['message'] = 'API Key not recognized';
+//    echo json_encode($jsonData);
+//}

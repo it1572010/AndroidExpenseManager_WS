@@ -10,6 +10,7 @@ class User implements JsonSerializable{
     private $nameUser;
     private $emailUser;
     private $password;
+    private $alokasiUser;
     
     public function getIdUser() {
         return $this->idUser;
@@ -42,10 +43,17 @@ class User implements JsonSerializable{
     public function setPassword($password) {
         $this->password = $password;
     }
+    
+    public function getAlokasiUser() {
+        return $this->alokasiUser;
+    }
 
+    public function setAlokasiUser($alokasiUser) {
+        $this->alokasiUser = $alokasiUser;
+    }
         
     public function jsonSerialize() {
-        
+        return get_object_vars($this);
     }
 
 }
