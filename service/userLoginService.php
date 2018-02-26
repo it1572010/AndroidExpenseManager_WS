@@ -13,7 +13,7 @@ if (isset($emailUser) && isset($password) && !empty($emailUser) && !empty($passw
     $user->setPassword($password);
     $userDao->setData($user);
     $result = $userDao->login();
-    if (isset($result) && isset($result->name)) {
+    if (isset($result) && isset($result->emailUser)) {
         $data = array('status' => 1, 'message' => 'Login succes', 'user' => $result);
     } else {
         $data = array('status' => 0, 'message' => 'Invalid email or password', 'user' => NULL);

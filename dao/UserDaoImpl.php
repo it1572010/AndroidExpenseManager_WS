@@ -38,7 +38,7 @@ class UserDaoImpl {
         $query = "SELECT * FROM User WHERE idUser = ? LIMIT 1";
         $stmt = $link->prepare($query);
         $stmt->bindParam(1, $id, PDO::PARAM_INT);
-        $stmt->setFetchMode(PDO::FETCH_OBJ | PDO::FETCH_PROPS_LATE,'User');
+        $stmt->setFetchMode(PDO::FETCH_OBJ | PDO::FETCH_PROPS_LATE, 'User');
         $stmt->execute();
         $result = $stmt->fetch();
         PDOUtil::closePDOConnection($link);
@@ -46,45 +46,46 @@ class UserDaoImpl {
     }
 
     public function addUser() {
-        if (isset($data) && !empty($data)) {
-            $link = PDOUtil::createPDOConnection();
-            $query = "INSERT INTO User(nameUser,emailUser,password) VALUES (?,?,?)";
-            $stmt = $link->prepare($query);
-            $stmt->bindValue(1, $this->data->getNameUser(), PDO::PARAM_STR);
-            $stmt->bindValue(2, $this->data->getEmailUser(), PDO::PARAM_STR);
-            $stmt->bindValue(3, $this->data->getPassword(), PDO::PARAM_STR);
-            $result = $stmt->execute();
-            PDOUtil::closePDOConnection($link);
-            return $result;
+        $link = PDOUtil::createPDOConnection();
+        $query = "INSERT INTO User(nameUser,emailUser,password) VALUES (?,?,MD5(?))";
+        $stmt = $link->prepare($query);
+        $stmt->bindValue(1, $this->data->getNameUser(), PDO::PARAM_STR);
+        $stmt->bindValue(2, $this->data->getEmailUser(), PDO::PARAM_STR);
+        $stmt->bindValue(3, $this->data->getPassword(), PDO::PARAM_STR);
+        $link->beginTransaction();
+        if ($stmt->execute()) {
+            $link->commit();
+        } else {
+            $link->rollBack();
         }
-        return NULL;
+        $this->data = NULL;
+        PDOUtil::closePDOConnection($link);
     }
 
     public function login() {
-        if (isset($this->data) && !empty($this->data)) {
-            $query = "SELECT u.* FROM user u WHERE u.email = ? AND u.password = MD5(?) LIMIT 1";
+        if (isset($this->data)) {
+            $query = "SELECT * FROM user WHERE emailUser = ? AND password = MD5(?) LIMIT 1";
             $link = PDOUtil::createPDOConnection();
             $stmt = $link->prepare($query);
             $stmt->bindValue(1, $this->data->getEmailUser(), PDO::PARAM_STR);
             $stmt->bindValue(2, $this->data->getPassword(), PDO::PARAM_STR);
-            $stmt->setFetchMode(PDO::FETCH_OBJ | PDO::FETCH_PROPS_LATE);
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
             $stmt->execute();
             $result = $stmt->fetch();
-            $this->data = NULL;
             PDOUtil::closePDOConnection($link);
-            return $result;
+            $this->data = NULL;
         }
-        return NULL;
+        return $result;
     }
 
     public function updateAlokasiDana() {
         if (isset($data) && !empty($data)) {
             $link = PDOUtil::createPDOConnection();
             $query = "Update User SET alokasiUser=? WHERE idUser=?";
-            $stmt=$link->prepare($query);
+            $stmt = $link->prepare($query);
             $stmt->bindValue(1, $this->data->getAlokasiUser(), PDO::PARAM_INT);
             $stmt->bindValue(2, $this->data->getIdUser(), PDO::PARAM_INT);
-            $result=$stmt->execute();
+            $result = $stmt->execute();
             PDOUtil::closePDOConnection($link);
             return $result;
         }
