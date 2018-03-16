@@ -9,16 +9,20 @@
 /**
  * Description of IncomeDaoImpl
  *
- * @author Win10
+ * @author Anthony (1572010)
  */
 class IncomeDaoImpl {
 
     /**
      *
-     * @var Income $data
+     * @var Income $dataIncome
      */
     private $dataIncome;
 
+    public function setDataIncome(Income $dataIncome) {
+        $this->dataIncome = $dataIncome;
+    }
+    
     public function getAllIncome() {
         $link = PDOUtil::createPDOConnection();
         $query = "SELECT * FROM Income";
@@ -55,20 +59,24 @@ class IncomeDaoImpl {
     }
 
     public function addIncome() {
-        if (isset($dataIncome) && !empty($dataIncome)) {
-            $link = PDOUtil::createPDOConnection();
-            $query = "INSERT INTO Income(moneyIncome,informationIncome,timeIncome,User_idUser,CategoryIncome_idCategoryIncome) VALUES (?,?,?,?,?)";
-            $stmt = $link->prepare($query);
-            $stmt->bindValue(1, $this->dataIncome->getMoneyIncome(), PDO::PARAM_INT);
-            $stmt->bindValue(2, $this->dataIncome->getInformationIncome(), PDO::PARAM_STR);
-            $stmt->bindValue(3, $this->dataIncome->getTimeIncome(), PDO::PARAM_STR);
-            $stmt->bindValue(4, $this->dataIncome->getUser()->getIdUser(), PDO::PARAM_INT);
-            $stmt->bindValue(5, $this->dataIncome->getCategoryIncome()->getIdCategoryIncome(), PDO::PARAM_INT);
-            $result = $stmt->execute();
-            PDOUtil::closePDOConnection($link);
-            return $result;
+        $link = PDOUtil::createPDOConnection();
+        $query = "INSERT INTO Income(moneyIncome,informationIncome,timeIncome,User_idUser,CategoryIncome_idCategoryIncome) VALUES (?,?,?,?,?)";
+        $stmt = $link->prepare($query);
+        $stmt->bindValue(1, $this->dataIncome->getMoneyIncome(), PDO::PARAM_INT);
+        $stmt->bindValue(2, $this->dataIncome->getInformationIncome(), PDO::PARAM_STR);
+        $stmt->bindValue(3, $this->dataIncome->getTimeIncome(), PDO::PARAM_STR);
+        $stmt->bindValue(4, $this->dataIncome->getUser()->getIdUser(), PDO::PARAM_INT);
+        $stmt->bindValue(5, $this->dataIncome->getCategoryIncome()->getIdCategoryIncome(), PDO::PARAM_INT);
+        $link->beginTransaction();
+        if($stmt->execute()){
+            $link->commit();
         }
-        return NULL;
+        else{
+            $link->rollBack();
+        }
+        $this->dataIncome=NULL;
+        $result = $stmt->execute();
+        PDOUtil::closePDOConnection($link);
     }
 
     public function updateIncome() {

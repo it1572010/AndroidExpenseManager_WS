@@ -9,14 +9,19 @@
 /**
  * Description of OutcomeDaoImpl
  *
- * @author Win10
+ * @author Anthony (1572010)
  */
 class OutcomeDaoImpl {
     /**
      *
-     * @var Outcome $data
+     * @var Outcome $dataOutcome
      */
     private $dataOutcome;
+    
+    public function setDataOutcome(Outcome $dataOutcome) {
+        $this->dataOutcome = $dataOutcome;
+    }
+    
     public function getAllOutcome(){
         $link= PDOUtil::createPDOConnection();
         $query="SELECT * FROM Outcome";
@@ -53,20 +58,23 @@ class OutcomeDaoImpl {
     }
     
     public function addOutcome(){
-        if(isset($dataOutcome) && !empty($dataOutcome)){
-            $link= PDOUtil::createPDOConnection();
-            $query="INSERT INTO Outcome(moneyOutcome,informationOutcome,timeOutcome,User_idUser,CategoryOutcome_idCategoryOutcome) VALUES (?,?,?,?,?)";
-            $stmt=$link->prepare($query);
-            $stmt->bindValue(1, $this->dataOutcome->getMoneyOutcome(), PDO::PARAM_INT);
-            $stmt->bindValue(2, $this->dataOutcome->getInformationOutcome(), PDO::PARAM_STR);
-            $stmt->bindValue(3, $this->dataOutcome->getTimeOutcome(), PDO::PARAM_STR);
-            $stmt->bindValue(4, $this->dataOutcome->getUser()->getIdUser(), PDO::PARAM_INT);
-            $stmt->bindValue(5, $this->dataOutcome->getCategoryOutcome()->getIdCategoryOutcome(), PDO::PARAM_INT);
-            $result = $stmt->execute();
-            PDOUtil::closePDOConnection($link);
-            return $result;
+        $link= PDOUtil::createPDOConnection();
+        $query="INSERT INTO Outcome(moneyOutcome,informationOutcome,timeOutcome,User_idUser,CategoryOutcome_idCategoryOutcome) VALUES (?,?,?,?,?)";
+        $stmt=$link->prepare($query);
+        $stmt->bindValue(1, $this->dataOutcome->getMoneyOutcome(), PDO::PARAM_INT);
+        $stmt->bindValue(2, $this->dataOutcome->getInformationOutcome(), PDO::PARAM_STR);
+        $stmt->bindValue(3, $this->dataOutcome->getTimeOutcome(), PDO::PARAM_STR);
+        $stmt->bindValue(4, $this->dataOutcome->getUser()->getIdUser(), PDO::PARAM_INT);
+        $stmt->bindValue(5, $this->dataOutcome->getCategoryOutcome()->getIdCategoryOutcome(), PDO::PARAM_INT);
+        $link->beginTransaction();
+        if($stmt->execute()){
+            $link->commit();
+        } else {
+            $link->rollBack();
         }
-        return NULL;
+        $this->dataOutcome=NULL;
+        PDOUtil::closePDOConnection($link);
+            
     }
     
     public function updateOutcome(){

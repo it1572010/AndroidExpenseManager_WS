@@ -9,9 +9,20 @@
 /**
  * Description of CategoryIncomeDaoImpl
  *
- * @author Win10
+ * @author Anthony (1572010)
  */
 class CategoryIncomeDaoImpl {
+    
+    /**
+     *
+     * @var CategoryIncome categoryIncomeData 
+     */
+    private $categoryIncomeData;
+    
+    public function setCategoryIncomeData(CategoryIncome $categoryIncomeData) {
+        $this->categoryIncomeData = $categoryIncomeData;
+    }
+    
     public function getAllCategoriesIncome(){
         $link= PDOUtil::createPDOConnection();
         $query="SELECT * FROM CategoryIncome";

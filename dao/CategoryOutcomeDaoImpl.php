@@ -9,9 +9,19 @@
 /**
  * Description of CategoryOutcomeDaoImpl
  *
- * @author Win10
+ * @author Anthony (1572010)
  */
 class CategoryOutcomeDaoImpl {
+    /**
+     *
+     * @var CategoryOutcome categoryOutcomeData 
+     */
+    private $categoryOutcomeData;
+    
+    public function setCategoryOutcomeData(CategoryOutcome $categoryOutcomeData) {
+        $this->categoryOutcomeData = $categoryOutcomeData;
+    }
+    
     public function getAllCategoriesOutcome(){
         $link= PDOUtil::createPDOConnection();
         $query="SELECT * FROM CategoryOutcome";
